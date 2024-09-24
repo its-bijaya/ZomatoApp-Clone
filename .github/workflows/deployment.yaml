@@ -27,5 +27,7 @@ jobs:
     runs-on: [self-hosted]
     steps:
       - name: docker pull
-        run: docker pull manlineroot12/zomato:latest
+        run: |
+          docker pull manlineroot12/zomato:latest
+          docker run -d -p 3000:3000 --name zomato manlineroot12/zomato:latest
   
