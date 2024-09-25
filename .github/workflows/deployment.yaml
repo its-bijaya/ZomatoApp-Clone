@@ -28,6 +28,14 @@ jobs:
     steps:
       - name: docker pull
         run: |
-          docker pull manlineroot12/zomato:latest
-          docker run -d -p 3000:3000 --name zomato manlineroot12/zomato:latest
-  
+          docker pull itsbijaya/zomato:latest
+          # docker run -d -p 3000:3000 --name zomato itsbijaya/zomato:latest
+      - name: Login to Azure Container Registry
+        run: |
+          az login --github-action -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+    
+      - name: Update Kubeconfig
+        run: az aks get-credentials --resource-group MyVm --name zomato-app --overwrite-existing
+    
+      - name: Deploy to Kubernetes
+        run: kubectl apply -f deployment-service.yml
