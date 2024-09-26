@@ -1,4 +1,4 @@
-name: build analyze, scan
+name: build analyze, scan and deploy
 on:
   push:
     branches:
@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: BUilding code and analyze with SonarQube
+      - name: Building code and analyze with SonarQube
         uses: actions/checkout@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -22,7 +22,7 @@ jobs:
         run: |
           npm install
   deploy:
-    name: deploy app to docker
+    name: deploy app to AKS
     needs: build-analyze-scan
     runs-on: [self-hosted]
     steps:
